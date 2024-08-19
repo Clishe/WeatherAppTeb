@@ -1,0 +1,214 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayoutMain"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/yourImageViewId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"></ImageView> <!--android:src="" -->>
+        //<!--android:src="Senin Resmin" -->>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <!-- Şehir Adı -->
+
+            <!-- İkon Resmi (Hava Durumu Simgesi) -->
+
+            <!-- Sıcaklık -->
+
+            <!-- Hissedilen Sıcaklık -->
+
+            <!-- Min ve Max Sıcaklıklar -->
+
+            <EditText
+                android:id="@+id/plain_text_input"
+                android:layout_width="337dp"
+                android:layout_height="62dp"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="485dp"
+                android:inputType="text"
+                android:minHeight="50dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewWeatherIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.433"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewWeather"
+                android:layout_width="206dp"
+                android:layout_height="86dp"
+                android:layout_marginBottom="56dp"
+
+                android:paddingTop="16dp"
+                android:text="Hava durumu bilgisi burada görünecek."
+                app:layout_constraintBottom_toTopOf="@+id/textViewMinMaxTemp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewVisibility"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewCityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="76dp"
+                android:paddingBottom="16dp"
+                android:text="City Name"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/imageViewWeatherIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageViewWeatherIcon" />
+
+            <!-- Nem -->
+
+            <!-- Rüzgar -->
+
+            <ImageView
+                android:id="@+id/imageViewWeatherIcon"
+                android:layout_width="376dp"
+                android:layout_height="699dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:contentDescription="Weather Icon"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="190dp"
+                android:layout_height="81dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="16dp"
+                android:text="Description"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewWeather"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTemperature">
+
+            </TextView>
+
+            <!-- Basınç -->
+
+            <!-- Görüş Mesafesi -->
+
+            <TextView
+                android:id="@+id/textViewTemperature"
+                android:layout_width="175dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:paddingBottom="16dp"
+                android:text="Temperature"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewHumidity"
+                app:layout_constraintHorizontal_bias="0.012"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCityName" />
+
+            <TextView
+                android:id="@+id/textViewFeelsLike"
+                android:layout_width="121dp"
+                android:layout_height="103dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="40dp"
+                android:paddingBottom="16dp"
+                android:text="Feels Like"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.268"
+                app:layout_constraintStart_toEndOf="@+id/textViewWeather" />
+
+            <TextView
+                android:id="@+id/textViewMinMaxTemp"
+                android:layout_width="200dp"
+                android:layout_height="81dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:paddingBottom="16dp"
+                android:text="Min/Max Temperature"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewPressure"
+                app:layout_constraintEnd_toStartOf="@+id/textViewFeelsLike"
+                app:layout_constraintHorizontal_bias="0.052"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewHumidity"
+                android:layout_width="111dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:paddingBottom="16dp"
+                android:text="Humidity"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewWind"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.896"
+                app:layout_constraintStart_toEndOf="@+id/textViewCityName"
+                app:layout_constraintTop_toBottomOf="@+id/plain_text_input" />
+
+            <TextView
+                android:id="@+id/textViewWind"
+                android:layout_width="169dp"
+                android:layout_height="132dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="4dp"
+                android:paddingBottom="16dp"
+                android:text="Wind"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewVisibility"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.941"
+                app:layout_constraintStart_toEndOf="@+id/textViewTemperature" />
+
+            <TextView
+                android:id="@+id/textViewPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingBottom="16dp"
+                android:text="Pressure"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewFeelsLike"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewVisibility"
+                android:layout_width="160dp"
+                android:layout_height="157dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="216dp"
+                android:paddingBottom="16dp"
+                android:text="Visibility"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewWeatherIcon"
+                app:layout_constraintVertical_bias="0.355" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>
