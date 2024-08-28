@@ -6,7 +6,7 @@ data class WeatherResponse(
     val wind: Wind,
     val name: String,
     val sys : Sys,
-
+    val timezone : Int
 )
 
 data class Coord(val lon: Double, val lat: Double)
