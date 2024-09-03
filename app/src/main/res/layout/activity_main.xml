@@ -47,7 +47,7 @@
                 android:id="@+id/textViewWeather"
                 android:layout_width="206dp"
                 android:layout_height="86dp"
-                android:layout_marginTop="52dp"
+                android:layout_marginTop="20dp"
                 android:paddingTop="16dp"
                 android:text="Sunrise Sunset"
                 android:textColor="#FF0000"
@@ -73,8 +73,8 @@
 
             <ImageView
                 android:id="@+id/imageViewWeatherIcon"
-                android:layout_width="379dp"
-                android:layout_height="765dp"
+                android:layout_width="388dp"
+                android:layout_height="864dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="Weather Icon"
                 android:paddingBottom="16dp"
@@ -91,7 +91,7 @@
                 android:layout_width="212dp"
                 android:layout_height="104dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="124dp"
+                android:layout_marginTop="132dp"
                 android:paddingBottom="16dp"
                 android:text="Description"
                 android:textColor="#FF0000"
@@ -137,16 +137,16 @@
             <TextView
                 android:id="@+id/textViewMinMaxTemp"
                 android:layout_width="212dp"
-                android:layout_height="101dp"
+                android:layout_height="132dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="68dp"
                 android:paddingBottom="16dp"
                 android:text="Min/Max Temperature"
                 android:textColor="#FF0000"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/textViewHumidity"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWeather" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
             <TextView
                 android:id="@+id/textViewHumidity"
@@ -168,13 +168,13 @@
                 android:layout_width="158dp"
                 android:layout_height="142dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:paddingBottom="16dp"
                 android:text="Wind"
                 android:textColor="#FF0000"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.733"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/textViewWeather"
                 app:layout_constraintTop_toBottomOf="@+id/windDirectionArrow" />
 
@@ -182,7 +182,7 @@
                 android:id="@+id/textViewPressure"
                 android:layout_width="214dp"
                 android:layout_height="78dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="44dp"
                 android:paddingBottom="16dp"
                 android:text="Pressure"
                 android:textColor="#FF0000"
@@ -209,15 +209,15 @@
 
             <ImageButton
                 android:id="@+id/buttonSettings"
-                android:layout_width="108dp"
-                android:layout_height="95dp"
-                android:layout_marginBottom="36dp"
+                android:layout_width="141dp"
+                android:layout_height="135dp"
+                android:layout_marginBottom="12dp"
                 android:background="@null"
                 android:contentDescription="Settings"
                 android:src="@drawable/your_settings_icon"
                 app:layout_constraintBottom_toTopOf="@+id/weatherIconView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintHorizontal_bias="0.448"
                 app:layout_constraintStart_toEndOf="@+id/textViewCityName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

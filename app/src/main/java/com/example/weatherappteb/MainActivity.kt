@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     private var isTextSizeLarge = false
     private var weatherdata: WeatherResponse? = null
     private var isKelvin = false
+    private var selectedUnit: String= "m/s"
+    private var selectedPressureUnit = "hPa"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,13 +123,13 @@ class MainActivity : AppCompatActivity() {
                             feelslike.text = "Feels Like: ${convertKelvinToCelsius(weatherdata?.main?.feels_like)} °C"
                             tempMinMax.text = "Min Temp: ${convertKelvinToCelsius(weatherdata?.main?.temp_min)}°C\nMax Temp: ${
                                 convertKelvinToCelsius(weatherdata?.main?.temp_max)}°C"
-                            winddegree.text = "Wind Degree: ${weatherdata?.wind?.deg}°\n Wind Speed:${convertMetersPerSecondToKmPerHour(weatherdata?.wind?.speed)} "
-
+                            winddegree.text = "Wind Degree: ${weatherdata?.wind?.deg}°\n Wind Speed: ${convertWindSpeed(weatherdata?.wind?.speed, selectedUnit)} $selectedUnit"
                             weatherdata?.wind?.deg?.let { windDegree ->
                                 windDirectionArrow.rotation = windDegree.toFloat()
                             }
                             description.text = "Description: ${weatherdata?.weather?.get(0)?.description}"
-                            pressure.text = "Pressure :${weatherdata?.main?.pressure} hPa"
+                            pressure.text = "Pressure: ${convertPressure(weatherdata?.main?.pressure, selectedPressureUnit)} $selectedPressureUnit"
+
                             humidity.text = "Humidity : %${weatherdata?.main?.humidity}"
 
                             val sunriseTime = convertUnixToTime(weatherdata?.sys?.sunrise?.toLong() ?: 0L, weatherdata?.timezone ?: 0)
@@ -168,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toggleTextSize() {
-        val newSize = if (isTextSizeLarge) 20f else 24f
+        val newSize = if (isTextSizeLarge) 22f else 24f
         val rootView = findViewById<FrameLayout>(R.id.frameLayoutMain) // Ana layout
         adjustTextSizeInViewGroup(rootView, newSize)
         isTextSizeLarge = !isTextSizeLarge
@@ -298,10 +300,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTemperatureDisplay() {
         val temperatureKelvin = weatherdata?.main?.temp
+        val feelsLikeKelvin = weatherdata?.main?.feels_like
+        val tempMinKelvin = weatherdata?.main?.temp_min
+        val tempMaxKelvin = weatherdata?.main?.temp_max
+
         if (isKelvin) {
             temperaturetv.text = "Temperature: $temperatureKelvin K"
+            feelslike.text = "Feels Like: $feelsLikeKelvin K"
+            tempMinMax.text = "Min Temp: $tempMinKelvin K\nMax Temp: $tempMaxKelvin K"
         } else {
             temperaturetv.text = "Temperature: ${convertKelvinToCelsius(temperatureKelvin)} °C"
+            feelslike.text = "Feels Like: ${convertKelvinToCelsius(feelsLikeKelvin)} °C"
+            tempMinMax.text = "Min Temp: ${convertKelvinToCelsius(tempMinKelvin)} °C\nMax Temp: ${convertKelvinToCelsius(tempMaxKelvin)} °C"
         }
     }
 
@@ -310,17 +320,55 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             isKelvin = data?.getBooleanExtra("isKelvin", false) ?: false
-            // Sıcaklık birimini ayara göre güncelle
+            val selectedWindSpeedUnit = data?.getStringExtra("selectedWindSpeedUnit") ?: "m/s"
+            val selectedPressureUnit = data?.getStringExtra("selectedPressureUnit") ?: "hPa"
+
             updateTemperatureDisplay()
+            updateWindSpeedDisplay(selectedWindSpeedUnit)
+            updatePressureDisplay(selectedPressureUnit)
         }
+    }
+    private fun updateWindSpeedDisplay(unit: String) {
+        val windSpeed = weatherdata?.wind?.speed
+        winddegree.text = "Wind Speed: ${convertWindSpeed(windSpeed, unit)} $unit"
     }
 
 
+    private fun convertPressure(pressureInHpa: Int?, unit: String): String {
+        return when (unit) {
+            "mbar" -> pressureInHpa?.toString() ?: ""
+            "mmHg" -> pressureInHpa?.let { String.format("%.2f", it * 0.750062) } ?: ""
+            "inHg" -> pressureInHpa?.let { String.format("%.2f", it * 0.02953) } ?: ""
+            "atm" -> pressureInHpa?.let { String.format("%.4f", it / 1013.25) } ?: ""
+            else -> pressureInHpa?.toString() ?: ""
+        }
+    }
+
+    private fun updatePressureDisplay(unit: String) {
+        val pressureValue = weatherdata?.main?.pressure
+        pressure.text = "Pressure: ${convertPressure(pressureValue, unit)} $unit"
+    }
+
+    private fun convertMetersPerSecondToMilesPerHour(speedInMetersPerSecond: Double?): String {
+        val mph = speedInMetersPerSecond?.times(2.237) ?: 0.0
+        return String.format("%.2f", mph)
+    }
+
+    private fun convertMetersPerSecondToKnots(speedInMetersPerSecond: Double?): String {
+        val knots = speedInMetersPerSecond?.times(1.944) ?: 0.0
+        return String.format("%.2f", knots)
+    }
 
     private fun convertKelvinToCelsius(kelvin: Double?): Int {
         return kelvin?.minus(272.5)?.toInt() ?: 0}
-    private fun convertMetersPerSecondToKmPerHour(speedInMetersPerSecond: Double?): String {
-        val kmPerHour = speedInMetersPerSecond?.times(3.6) ?: 0.0
-        return String.format("%.2f", kmPerHour)
+
+    private fun convertWindSpeed(speedInMetersPerSecond: Double?, unit: String): String {
+        val speed = when (unit) {
+            "km/h" -> (speedInMetersPerSecond?.times(3.6) ?: 0.0)
+            "mph" -> (speedInMetersPerSecond?.times(2.23694) ?: 0.0)
+            "kn" -> (speedInMetersPerSecond?.times(1.94384) ?: 0.0)
+            else -> speedInMetersPerSecond ?: 0.0 // Varsayılan birim m/s
+        }
+        return String.format("%.2f", speed)
     }
 }

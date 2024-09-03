@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="SwitchTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+</resources>
