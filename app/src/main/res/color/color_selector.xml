@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This color will be applied when the field is focused -->
+    <item android:color="#FFD700" android:state_focused="true"/>
+    <!-- This color will be applied when the field is not focused -->
+    <item android:color="#FFD700" android:state_focused="false"/>
+</selector>

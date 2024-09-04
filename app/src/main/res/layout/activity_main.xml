@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--android:src="" -->>
+        //<!--android:src="Senin Resmin" -->>
+
     <ImageView
         android:id="@+id/yourImageViewId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"></ImageView> <!--android:src="" -->>
-        //<!--android:src="Senin Resmin" -->>
+        android:scaleType="centerCrop" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="834dp"
+        android:layout_height="872dp"
         android:padding="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,66 +24,64 @@
             android:layout_height="wrap_content">
 
 
+            <!-- TextInputLayout for outlined box style -->
+
             <ImageView
                 android:id="@+id/windDirectionArrow"
-                android:layout_width="86dp"
-                android:layout_height="68dp"
+                android:layout_width="98dp"
+                android:layout_height="112dp"
+                android:layout_marginBottom="16dp"
                 android:contentDescription="Wind Direction Arrow"
-                android:src="@drawable/yukari_ok"
+                android:src="@drawable/yukari_ok_sari"
+                app:layout_constraintBottom_toTopOf="@+id/textViewWind"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewDescription"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHumidity" />
+                app:layout_constraintHorizontal_bias="0.688"
+                app:layout_constraintStart_toEndOf="@+id/textViewPressure" />
 
-            <EditText
-                android:id="@+id/plain_text_input"
-                android:layout_width="337dp"
-                android:layout_height="62dp"
-                android:inputType="text"
-                android:minHeight="50dp"
-                android:textColor="#FF0000"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/plain_text_input_layout"
+                android:layout_width="385dp"
+                android:layout_height="118dp"
+                android:hint="Enter city"
+                app:boxStrokeColor="#FFD700"
+                app:boxBackgroundMode="outline"
+                app:layout_constraintBottom_toTopOf="@+id/textViewTemperature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/plain_text_input"
+                    android:layout_width="375dp"
+                    android:layout_height="108dp"
+                    android:inputType="text"
+                    android:textColor="@color/gold" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textViewWeather"
                 android:layout_width="206dp"
                 android:layout_height="86dp"
-                android:layout_marginTop="20dp"
                 android:paddingTop="16dp"
                 android:text="Sunrise Sunset"
-                android:textColor="#FF0000"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewWeatherIcon"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
-
-            <TextView
-                android:id="@+id/textViewCityName"
-                android:layout_width="205dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="16dp"
-                android:text="City Name"
-                android:textColor="#FF0000"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/weatherIconView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plain_text_input" />
-
+                android:textColor="#FFD700"
+                app:layout_constraintBottom_toTopOf="@+id/windDirectionArrow"
+                app:layout_constraintEnd_toStartOf="@+id/textViewHumidity"
+                app:layout_constraintHorizontal_bias="0.366"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewWeatherIcon"
-                android:layout_width="388dp"
-                android:layout_height="864dp"
+                android:layout_width="22dp"
+                android:layout_height="688dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="Weather Icon"
                 android:paddingBottom="16dp"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.984"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
@@ -91,103 +91,100 @@
                 android:layout_width="212dp"
                 android:layout_height="104dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="132dp"
                 android:paddingBottom="16dp"
                 android:text="Description"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCityName">
+                app:layout_constraintBottom_toTopOf="@+id/textViewWeather"
+                app:layout_constraintEnd_toStartOf="@+id/weatherIconView"
+                app:layout_constraintStart_toStartOf="parent">
 
             </TextView>
 
             <TextView
                 android:id="@+id/textViewTemperature"
-                android:layout_width="203dp"
-                android:layout_height="115dp"
+                android:layout_width="230dp"
+                android:layout_height="157dp"
                 android:layout_gravity="center_horizontal"
                 android:paddingBottom="16dp"
                 android:text="Temperature"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewDescription"
-                app:layout_constraintEnd_toStartOf="@+id/weatherIconView"
-                app:layout_constraintHorizontal_bias="0.428"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCityName"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textViewFeelsLike"
                 android:layout_width="157dp"
                 android:layout_height="159dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="196dp"
                 android:paddingBottom="16dp"
                 android:text="Feels Like"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.375"
-                app:layout_constraintStart_toEndOf="@+id/textViewPressure"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWind" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPressure"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textViewMinMaxTemp"
                 android:layout_width="212dp"
                 android:layout_height="132dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="12dp"
                 android:paddingBottom="16dp"
                 android:text="Min/Max Temperature"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHumidity"
+                app:layout_constraintEnd_toStartOf="@+id/windDirectionArrow"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewWeather" />
 
             <TextView
                 android:id="@+id/textViewHumidity"
                 android:layout_width="165dp"
                 android:layout_height="82dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="120dp"
+                android:layout_marginStart="24dp"
                 android:paddingBottom="16dp"
                 android:text="Humidity"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textViewTemperature"
-                app:layout_constraintTop_toTopOf="@+id/textViewDescription" />
+                app:layout_constraintBottom_toTopOf="@+id/windDirectionArrow"
+                app:layout_constraintStart_toEndOf="@+id/textViewMinMaxTemp"
+                app:layout_constraintTop_toBottomOf="@+id/weatherIconView"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/textViewWind"
                 android:layout_width="158dp"
                 android:layout_height="142dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                android:layout_marginBottom="196dp"
                 android:paddingBottom="16dp"
                 android:text="Wind"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textViewWeather"
-                app:layout_constraintTop_toBottomOf="@+id/windDirectionArrow" />
+                app:layout_constraintStart_toEndOf="@+id/textViewFeelsLike" />
 
             <TextView
                 android:id="@+id/textViewPressure"
                 android:layout_width="214dp"
                 android:layout_height="78dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginStart="4dp"
                 android:paddingBottom="16dp"
                 android:text="Pressure"
-                android:textColor="#FF0000"
+                android:textColor="#FFD700"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewWeatherIcon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMinMaxTemp" />
@@ -197,28 +194,25 @@
                 android:layout_width="165dp"
                 android:layout_height="145dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginEnd="4dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="Weather Icon"
                 android:paddingBottom="16dp"
-                android:text="Icon"
-                android:textColor="#FF0000"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textViewHumidity"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plain_text_input"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintHorizontal_bias="0.785"
+                app:layout_constraintStart_toEndOf="@+id/textViewWeather"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSettings" />
 
             <ImageButton
                 android:id="@+id/buttonSettings"
                 android:layout_width="141dp"
                 android:layout_height="135dp"
-                android:layout_marginBottom="12dp"
                 android:background="@null"
                 android:contentDescription="Settings"
                 android:src="@drawable/your_settings_icon"
-                app:layout_constraintBottom_toTopOf="@+id/weatherIconView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.448"
-                app:layout_constraintStart_toEndOf="@+id/textViewCityName" />
+                app:layout_constraintStart_toEndOf="@+id/textViewDescription"
+                app:layout_constraintTop_toBottomOf="@+id/plain_text_input_layout" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

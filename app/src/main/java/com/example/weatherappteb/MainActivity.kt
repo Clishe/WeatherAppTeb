@@ -21,6 +21,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var temperaturetv: TextView
     private lateinit var feelslike: TextView
     private lateinit var tempMinMax : TextView
-    private lateinit var cityInput: EditText
+    private lateinit var cityInput: TextInputEditText
     private lateinit var winddegree : TextView
     private lateinit var windDirectionArrow: ImageView
     private lateinit var description : TextView
