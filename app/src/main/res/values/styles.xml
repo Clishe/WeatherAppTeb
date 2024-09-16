@@ -1,7 +1,10 @@
 <resources>
-
-    <style name="SwitchTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#FF000000</item>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Light Mode colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 </resources>

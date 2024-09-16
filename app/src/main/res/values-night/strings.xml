@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">WeatherAppTeb</string>
+    <string-array name="wind_speed_units">
+        <item>km/h</item>
+        <item>m/s</item>
+        <item>mph</item>
+        <item>kn</item>
+    </string-array>
+
+    <string-array name="pressure_units">
+        <item>hPa</item>
+        <item>mbar</item>
+        <item>mmHg</item>
+        <item>inHg</item>
+        <item>atm</item>
+    </string-array>
+</resources>

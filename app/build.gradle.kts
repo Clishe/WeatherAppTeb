@@ -67,7 +67,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation("androidx.activity:activity:1.8.0")
+    implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("com.google.android.material:material:1.9.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    //implementation("androidx.compose.ui:ui-desktop:1.7.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
 

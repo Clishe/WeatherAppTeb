@@ -1,6 +1,7 @@
 package com.example.weatherappteb
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
@@ -39,20 +43,73 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pressure : TextView
     private lateinit var humidity : TextView
     private lateinit var sunriseset : TextView
+    private lateinit var weatherIconView: ImageView
     private var isTextSizeLarge = false
     private var weatherdata: WeatherResponse? = null
     private var isKelvin = false
     private var selectedUnit: String= "m/s"
     private var selectedPressureUnit = "hPa"
-
+    private val weatherViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(0, 0)
         setContentView(R.layout.activity_main)
 
+
+
+        val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
+        applyDarkMode(isDarkMode)
+
+        setContentView(R.layout.activity_main)
+
+        val rootView = findViewById<ViewGroup>(R.id.frameLayoutMain)
+        setTextSizeInViewGroup(rootView, 26f)
+
+        // Initialize views
+        initViews()
+
+        // Observe ViewModel data changes and update the UI accordingly
+        weatherViewModel.weatherData.observe(this, Observer { weatherData ->
+            weatherData?.let { updateWeatherUI(it) }
+        })
+
+        weatherViewModel.isKelvin.observe(this, Observer { isKelvin ->
+            updateTemperatureDisplay()
+        })
+
+        weatherViewModel.selectedWindSpeedUnit.observe(this, Observer { windUnit ->
+            updateWindSpeedDisplay(windUnit)
+        })
+
+        weatherViewModel.selectedPressureUnit.observe(this, Observer { pressureUnit ->
+            updatePressureDisplay(pressureUnit)
+        })
+
+        // Handle city input to fetch data
+        cityInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val cityName = cityInput.text.toString()
+                fetchWeatherData(cityName, "c06d7786b337375d98565ef307296059")
+                true
+            } else {
+                false
+            }
+        }
+
+        // Button to open settings
+        val buttonSettings: ImageButton = findViewById(R.id.buttonSettings)
+        buttonSettings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivityForResult(intent, 100)
+        }
+    }
+
+    private fun initViews() {
         winddegree = findViewById(R.id.textViewWind)
         temperaturetv = findViewById(R.id.textViewTemperature)
-        feelslike  = findViewById(R.id.textViewFeelsLike)
+        feelslike = findViewById(R.id.textViewFeelsLike)
         tempMinMax = findViewById(R.id.textViewMinMaxTemp)
         cityInput = findViewById(R.id.plain_text_input)
         windDirectionArrow = findViewById(R.id.windDirectionArrow)
@@ -60,134 +117,78 @@ class MainActivity : AppCompatActivity() {
         pressure = findViewById(R.id.textViewPressure)
         humidity = findViewById(R.id.textViewHumidity)
         sunriseset = findViewById(R.id.textViewWeather)
-        val imageView: ImageView = findViewById(R.id.yourImageViewId)
-
-        val buttonSettings: ImageButton = findViewById(R.id.buttonSettings)
-        buttonSettings.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivityForResult(intent, 100)
-        }
-
-
-
-        val placeholderUrl = "https://pbs.twimg.com/media/GMUm51KXoAAEVDV.jpg"
-        Glide.with(this)
-            .load(placeholderUrl)
-            .into(imageView)
-
-
-        val newButton = Button(this).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-            }
-            text = "Yazı Boyutunu Değiştir"
-        }
-        val frameLayout = findViewById<FrameLayout>(R.id.frameLayoutMain)
-        frameLayout.addView(newButton)
-
-        newButton.setOnClickListener {
-            toggleTextSize()
-        }
-
-        cityInput.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val cityName = cityInput.text.toString()
-                fetchWeatherData(cityName, "c06d7786b337375d98565ef307296059", imageView)
-                true
-            } else {
-                false
-            }
-        }
+        weatherIconView = findViewById(R.id.weatherIconView)
     }
 
-    private fun fetchWeatherData(cityName: String, apiKey: String, imageView: ImageView) {
+    private fun fetchWeatherData(cityName: String, apiKey: String) {
         val client = OkHttpClient()
         val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey"
         val request = Request.Builder().url(url).build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
-                Log.d("weather", "API çağrısı başarısız oldu: ${e.message}")
+                // Handle failure
             }
 
-            override fun onResponse(call: okhttp3.Call, response: Response) {
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 if (response.isSuccessful) {
                     val responseData = response.body?.string()
                     responseData?.let {
-                        weatherdata = Gson().fromJson(responseData, WeatherResponse::class.java)
+                        val weatherResponse = Gson().fromJson(responseData, WeatherResponse::class.java)
                         runOnUiThread {
-
-                            temperaturetv.text = "Temperature: ${convertKelvinToCelsius(weatherdata?.main?.temp)} °C"
-                            feelslike.text = "Feels Like: ${convertKelvinToCelsius(weatherdata?.main?.feels_like)} °C"
-                            tempMinMax.text = "Min Temp: ${convertKelvinToCelsius(weatherdata?.main?.temp_min)}°C\nMax Temp: ${
-                                convertKelvinToCelsius(weatherdata?.main?.temp_max)}°C"
-                            winddegree.text = "Wind Degree: ${weatherdata?.wind?.deg}°\n Wind Speed: ${convertWindSpeed(weatherdata?.wind?.speed, selectedUnit)} $selectedUnit"
-                            weatherdata?.wind?.deg?.let { windDegree ->
-                                windDirectionArrow.rotation = windDegree.toFloat()
-                            }
-                            description.text = "Description: ${weatherdata?.weather?.get(0)?.description}"
-                            pressure.text = "Pressure: ${convertPressure(weatherdata?.main?.pressure, selectedPressureUnit)} $selectedPressureUnit"
-
-                            humidity.text = "Humidity : %${weatherdata?.main?.humidity}"
-
-                            val sunriseTime = convertUnixToTime(weatherdata?.sys?.sunrise?.toLong() ?: 0L, weatherdata?.timezone ?: 0)
-                            val sunsetTime = convertUnixToTime(weatherdata?.sys?.sunset?.toLong() ?: 0L, weatherdata?.timezone ?: 0)
-                            sunriseset.text = "Sunrise: $sunriseTime\nSunset: $sunsetTime"
-
-                            val weatherIconView: ImageView = findViewById(R.id.weatherIconView)
-
-                            val isDay = isDaylight(
-                                weatherdata?.sys?.sunrise?.toLong() ?: 0L,
-                                weatherdata?.sys?.sunset?.toLong() ?: 0L,
-                                weatherdata?.timezone ?: 0
-                            )
-
-                            val weatherIcon = getWeatherIcon(weatherdata?.weather?.get(0)?.description ?: "", isDay)
-                            weatherIconView.setImageResource(weatherIcon)
-
-                            val imageResource: Int
-
-
-                            if (isDay) {
-                                imageResource = R.drawable.day_background
-                            } else {
-                                imageResource = R.drawable.night_background
-                            }
-
-
-                            imageView.setImageResource(imageResource)
+                            weatherViewModel.setWeatherData(weatherResponse) // Save weather data in ViewModel
                         }
-                    }
-                } else {
-                    runOnUiThread {
-                        Log.d("weather", "API çağrısı başarılı değil: ${response.code}")
                     }
                 }
             }
         })
     }
 
-    private fun toggleTextSize() {
-        val newSize = if (isTextSizeLarge) 22f else 24f
-        val rootView = findViewById<FrameLayout>(R.id.frameLayoutMain) // Ana layout
-        adjustTextSizeInViewGroup(rootView, newSize)
-        isTextSizeLarge = !isTextSizeLarge
+    private fun updateWeatherUI(weatherData: WeatherResponse) {
+        temperaturetv.text = "Temperature: ${convertKelvinToCelsius(weatherData.main.temp)} °C"
+        feelslike.text = "Feels Like: ${convertKelvinToCelsius(weatherData.main.feels_like)} °C"
+        tempMinMax.text = "Min Temp: ${convertKelvinToCelsius(weatherData.main.temp_min)}°C\nMax Temp: ${
+            convertKelvinToCelsius(weatherData.main.temp_max)}°C"
+        winddegree.text = "Wind Degree: ${weatherData.wind.deg}°\n Wind Speed: ${convertWindSpeed(weatherData.wind.speed, weatherViewModel.selectedWindSpeedUnit.value ?: "m/s")} ${weatherViewModel.selectedWindSpeedUnit.value}"
+        windDirectionArrow.rotation = weatherData.wind.deg.toFloat()
+        description.text = "Description: ${weatherData.weather[0].description}"
+        pressure.text = "Pressure: ${convertPressure(weatherData.main.pressure, weatherViewModel.selectedPressureUnit.value ?: "hPa")} ${weatherViewModel.selectedPressureUnit.value}"
+        humidity.text = "Humidity: %${weatherData.main.humidity}"
+
+        val sunriseTime = convertUnixToTime(weatherData.sys.sunrise.toLong(), weatherData.timezone)
+        val sunsetTime = convertUnixToTime(weatherData.sys.sunset.toLong(), weatherData.timezone)
+        sunriseset.text = "Sunrise: $sunriseTime\nSunset: $sunsetTime"
+
+        // Set the weather icon
+        val isDay = isDaylight(
+            weatherData.sys.sunrise.toLong(),
+            weatherData.sys.sunset.toLong(),
+            weatherData.timezone
+        )
+        val weatherIcon = getWeatherIcon(weatherData.weather[0].description, isDay)
+        weatherIconView.setImageResource(weatherIcon)
     }
 
+    private fun applyDarkMode(isDarkMode: Boolean) {
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
 
-    private fun adjustTextSizeInViewGroup(viewGroup: ViewGroup, size: Float) {
+    private fun setTextSizeInViewGroup(viewGroup: ViewGroup, size: Float) {
         for (i in 0 until viewGroup.childCount) {
             val child = viewGroup.getChildAt(i)
             if (child is TextView) {
                 child.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
             } else if (child is ViewGroup) {
-                adjustTextSizeInViewGroup(child, size)
+                setTextSizeInViewGroup(child, size)
             }
         }
     }
+
+
     private fun convertTimezoneToUTCFormat(timezoneInSeconds: Int): String {
         // Timezone saniye cinsinden geliyor, saat cinsine çevirmek için 3600'e bölüyoruz
         val timezoneInHours = timezoneInSeconds / 3600
@@ -300,38 +301,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateTemperatureDisplay() {
-        val temperatureKelvin = weatherdata?.main?.temp
-        val feelsLikeKelvin = weatherdata?.main?.feels_like
-        val tempMinKelvin = weatherdata?.main?.temp_min
-        val tempMaxKelvin = weatherdata?.main?.temp_max
-
-        if (isKelvin) {
-            temperaturetv.text = "Temperature: $temperatureKelvin K"
-            feelslike.text = "Feels Like: $feelsLikeKelvin K"
-            tempMinMax.text = "Min Temp: $tempMinKelvin K\nMax Temp: $tempMaxKelvin K"
-        } else {
-            temperaturetv.text = "Temperature: ${convertKelvinToCelsius(temperatureKelvin)} °C"
-            feelslike.text = "Feels Like: ${convertKelvinToCelsius(feelsLikeKelvin)} °C"
-            tempMinMax.text = "Min Temp: ${convertKelvinToCelsius(tempMinKelvin)} °C\nMax Temp: ${convertKelvinToCelsius(tempMaxKelvin)} °C"
+        weatherViewModel.weatherData.value?.let { weatherData ->
+            val tempKelvin = weatherData.main.temp
+            val tempCelsius = convertKelvinToCelsius(tempKelvin)
+            temperaturetv.text = if (weatherViewModel.isKelvin.value == true) {
+                "Temperature: $tempKelvin K"
+            } else {
+                "Temperature: $tempCelsius °C"
+            }
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            isKelvin = data?.getBooleanExtra("isKelvin", false) ?: false
+            val isKelvin = data?.getBooleanExtra("isKelvin", false) ?: false
             val selectedWindSpeedUnit = data?.getStringExtra("selectedWindSpeedUnit") ?: "m/s"
             val selectedPressureUnit = data?.getStringExtra("selectedPressureUnit") ?: "hPa"
 
-            updateTemperatureDisplay()
-            updateWindSpeedDisplay(selectedWindSpeedUnit)
-            updatePressureDisplay(selectedPressureUnit)
+            weatherViewModel.setKelvin(isKelvin) // Update ViewModel
+            weatherViewModel.setWindSpeedUnit(selectedWindSpeedUnit) // Update ViewModel
+            weatherViewModel.setPressureUnit(selectedPressureUnit) // Update ViewModel
         }
     }
     private fun updateWindSpeedDisplay(unit: String) {
-        val windSpeed = weatherdata?.wind?.speed
-        winddegree.text = "Wind Speed: ${convertWindSpeed(windSpeed, unit)} $unit"
+        weatherViewModel.weatherData.value?.let { weatherData ->
+            winddegree.text = "Wind Speed: ${convertWindSpeed(weatherData.wind.speed, unit)} $unit"
+        }
     }
 
 
@@ -346,8 +342,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePressureDisplay(unit: String) {
-        val pressureValue = weatherdata?.main?.pressure
-        pressure.text = "Pressure: ${convertPressure(pressureValue, unit)} $unit"
+        weatherViewModel.weatherData.value?.let { weatherData ->
+            pressure.text = "Pressure: ${convertPressure(weatherData.main.pressure, unit)} $unit"
+        }
     }
 
     private fun convertMetersPerSecondToMilesPerHour(speedInMetersPerSecond: Double?): String {
@@ -359,6 +356,7 @@ class MainActivity : AppCompatActivity() {
         val knots = speedInMetersPerSecond?.times(1.944) ?: 0.0
         return String.format("%.2f", knots)
     }
+
 
     private fun convertKelvinToCelsius(kelvin: Double?): Int {
         return kelvin?.minus(272.5)?.toInt() ?: 0}

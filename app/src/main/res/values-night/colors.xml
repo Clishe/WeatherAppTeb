@@ -8,14 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="textColorPrimary">#FFD700</color>
-    <color name="colorAccentDark">#FF4081</color>
     <color name="gold">#FFD700</color>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorTextPrimaryNight">#000000</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="colorTextPrimary">#000000</color>
-    <color name="colorHint">#808080</color>
-    <color name="colorInputText">#000000</color>
-    <color name="colorHintText">#808080</color>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorAccentDark">#FF4081</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#BB86FC</color>
+    <color name="colorTextPrimaryNight">#FFFFFF</color>
+    <color name="colorHint">#B0B0B0</color>
+    <color name="colorInputText">#FFFFFF</color>
+    <color name="colorHintText">#B0B0B0</color>
 </resources>
