@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Varsayılan Dark Tema -->
+    <style name="Theme.Default" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Dark theme renkleri ve diğer özelleştirmeler -->
+        <item name="colorPrimary">#aac7ff</item>
+        <item name="colorPrimaryVariant">#0a305f</item>
+        <item name="colorOnPrimary">#284777</item>
+    </style>
 
-    <style name="Theme.WeatherAppTeb" parent="android:Theme.Material.Light.NoActionBar"
-        />
+    <!-- Tema 1 Dark -->
+    <style name="Theme.CustomOne" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Custom Theme 1 dark renkleri ve diğer özelleştirmeler -->
+        <item name="colorPrimary">#bec6dc</item>
+        <item name="colorPrimaryVariant">#283141</item>
+        <item name="colorOnPrimary">#3e4759</item>
+    </style>
+
+    <!-- Tema 2 Dark -->
+    <style name="Theme.CustomTwo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Custom Theme 2 dark renkleri ve diğer özelleştirmeler -->
+        <item name="colorPrimary">#ddbce0</item>
+        <item name="colorPrimaryVariant">#3f2844</item>
+        <item name="colorOnPrimary">#573e5c</item>
+    </style>
+
+    <!-- Tema 3 Dark -->
+    <style name="Theme.CustomThree" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Custom Theme 3 dark renkleri ve diğer özelleştirmeler -->
+        <item name="colorPrimary">#ffb4ab</item>
+        <item name="colorPrimaryVariant">#690005</item>
+        <item name="colorOnPrimary">#93000a</item>
+    </style>
 </resources>

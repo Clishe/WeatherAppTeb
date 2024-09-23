@@ -8,15 +8,18 @@
 
     <ImageButton
         android:id="@+id/buttonBack"
-        android:layout_width="90dp"
-        android:layout_height="91dp"
+        android:layout_width="115dp"
+        android:layout_height="106dp"
         android:layout_marginBottom="4dp"
         android:background="@null"
         android:contentDescription="Back"
         android:src="@drawable/your_back_icon_resized"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonThemeTwo"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchTemperatureUnit"
@@ -26,6 +29,7 @@
         android:text="Temperature Unit"
         android:textOff="Celsius"
         android:textOn="Kelvin"
+        style="@style/TextAppearance.Material3.TitleLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,20 +40,76 @@
         android:id="@+id/switchTheme"
         android:layout_width="341dp"
         android:layout_height="128dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="8dp"
         android:text="Dark Mode"
+        style="@style/TextAppearance.Material3.TitleLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchTemperatureUnit"
         app:showText="true" />
 
+    <ImageButton
+        android:id="@+id/buttonThemeOne"
+        android:layout_width="126dp"
+        android:layout_height="122dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/seagull_resized"
+        app:layout_constraintBottom_toTopOf="@+id/buttonThemeFour"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPressureUnit"
+        app:layout_constraintVertical_bias="0.674" />
+
+    <ImageButton
+        android:id="@+id/buttonThemeTwo"
+        android:layout_width="134dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/purple_pink_resized"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonThemeOne"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toEndOf="@+id/buttonThemeThree"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPressureUnit"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <ImageButton
+        android:id="@+id/buttonThemeThree"
+        android:layout_width="132dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/strawberry_resized"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPressureUnit"
+        app:layout_constraintVertical_bias="0.116" />
+
+    <ImageButton
+        android:id="@+id/buttonThemeFour"
+        android:layout_width="129dp"
+        android:layout_height="127dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/corn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toEndOf="@+id/buttonBack"
+        app:layout_constraintTop_toBottomOf="@+id/buttonThemeTwo" />
+
+    <Button
+        android:layout_width="303dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonThemeTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Spinner
         android:id="@+id/spinnerWindSpeed"
         android:layout_width="405dp"
         android:layout_height="78dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="12dp"
+        style="?android:attr/spinnerDropDownItemStyle"
         android:entries="@array/wind_speed_units"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchTheme" />
 
@@ -57,10 +117,10 @@
         android:id="@+id/spinnerPressureUnit"
         android:layout_width="405dp"
         android:layout_height="78dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="16dp"
         android:entries="@array/pressure_units"
+        style="?android:attr/spinnerDropDownItemStyle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerWindSpeed" />
 </androidx.constraintlayout.widget.ConstraintLayout>

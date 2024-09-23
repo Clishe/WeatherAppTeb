@@ -1,6 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Default Theme -->
+    <style name="Theme.Default" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#001b3e</item>
+        <item name="colorPrimaryVariant">#d6e3ff</item>
+        <item name="android:windowBackground">#eac16c</item>
+        <item name="android:textColorPrimary">#364f17</item>
+    </style>
 
-    <style name="Theme.WeatherAppTeb" parent="android:Theme.Material.Light.NoActionBar"
-        />
+    <!-- Custom Theme 1 -->
+    <style name="Theme.CustomOne" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#131c2b</item>
+        <item name="colorPrimaryVariant">#dae2f9</item>
+        <item name="android:windowBackground">#565f71</item>
+        <item name="android:textColorPrimary">#131c2b</item>
+    </style>
+
+    <!-- Custom Theme 2 -->
+    <style name="Theme.CustomTwo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#705575</item>
+        <item name="colorPrimaryVariant">#fad8fd</item>
+        <item name="android:windowBackground">#fad8fd</item>
+        <item name="android:textColorPrimary">#705575</item>
+    </style>
+
+    <!-- Custom Theme 3 -->
+    <style name="Theme.CustomThree" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#410002</item>
+        <item name="colorPrimaryVariant">#ffdad6</item>
+        <item name="android:windowBackground">#ba1a1a</item>
+        <item name="android:textColorPrimary">#ffdad6</item>
+    </style>
 </resources>

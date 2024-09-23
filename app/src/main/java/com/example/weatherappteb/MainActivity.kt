@@ -3,6 +3,7 @@ package com.example.weatherappteb
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -25,6 +26,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.example.weatherappteb.base.BaseActivity
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -32,7 +34,7 @@ import java.util.Locale
 import java.util.Calendar
 import java.util.TimeZone
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var temperaturetv: TextView
     private lateinit var feelslike: TextView
     private lateinit var tempMinMax : TextView
@@ -51,25 +53,20 @@ class MainActivity : AppCompatActivity() {
     private var selectedPressureUnit = "hPa"
     private val weatherViewModel: MainViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
-        overridePendingTransition(0, 0)
         setContentView(R.layout.activity_main)
 
+        // Initialize views
+        applyDarkMode()
+        initViews()
 
-
-        val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
-        applyDarkMode(isDarkMode)
-
-        setContentView(R.layout.activity_main)
 
         val rootView = findViewById<ViewGroup>(R.id.frameLayoutMain)
         setTextSizeInViewGroup(rootView, 26f)
-
-        // Initialize views
-        initViews()
-
         // Observe ViewModel data changes and update the UI accordingly
         weatherViewModel.weatherData.observe(this, Observer { weatherData ->
             weatherData?.let { updateWeatherUI(it) }
@@ -103,6 +100,20 @@ class MainActivity : AppCompatActivity() {
         buttonSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivityForResult(intent, 100)
+
+            // Apply the animation when starting SettingsActivity
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+    }
+
+
+    private fun applyDarkMode() {
+        val settingsPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val isDarkMode = settingsPreferences.getBoolean("isDarkMode", false)
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 
@@ -167,14 +178,6 @@ class MainActivity : AppCompatActivity() {
         )
         val weatherIcon = getWeatherIcon(weatherData.weather[0].description, isDay)
         weatherIconView.setImageResource(weatherIcon)
-    }
-
-    private fun applyDarkMode(isDarkMode: Boolean) {
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
     }
 
     private fun setTextSizeInViewGroup(viewGroup: ViewGroup, size: Float) {
@@ -312,18 +315,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            val isKelvin = data?.getBooleanExtra("isKelvin", false) ?: false
-            val selectedWindSpeedUnit = data?.getStringExtra("selectedWindSpeedUnit") ?: "m/s"
-            val selectedPressureUnit = data?.getStringExtra("selectedPressureUnit") ?: "hPa"
-
-            weatherViewModel.setKelvin(isKelvin) // Update ViewModel
-            weatherViewModel.setWindSpeedUnit(selectedWindSpeedUnit) // Update ViewModel
-            weatherViewModel.setPressureUnit(selectedPressureUnit) // Update ViewModel
-        }
-    }
     private fun updateWindSpeedDisplay(unit: String) {
         weatherViewModel.weatherData.value?.let { weatherData ->
             winddegree.text = "Wind Speed: ${convertWindSpeed(weatherData.wind.speed, unit)} $unit"
@@ -357,6 +348,21 @@ class MainActivity : AppCompatActivity() {
         return String.format("%.2f", knots)
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            // Handle other changes like temperature unit, wind speed unit, pressure unit
+            val isKelvin = data?.getBooleanExtra("isKelvin", false) ?: false
+            val selectedWindSpeedUnit = data?.getStringExtra("selectedWindSpeedUnit") ?: "m/s"
+            val selectedPressureUnit = data?.getStringExtra("selectedPressureUnit") ?: "hPa"
+
+            weatherViewModel.setKelvin(isKelvin)
+            weatherViewModel.setWindSpeedUnit(selectedWindSpeedUnit)
+            weatherViewModel.setPressureUnit(selectedPressureUnit)
+        }
+    }
 
     private fun convertKelvinToCelsius(kelvin: Double?): Int {
         return kelvin?.minus(272.5)?.toInt() ?: 0}
